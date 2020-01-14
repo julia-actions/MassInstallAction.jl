@@ -1,5 +1,5 @@
 import GitCommand: git
-import GitHub:
+import GitHub
 
 function install(workflow::Workflow,
                  org::AbstractString;
