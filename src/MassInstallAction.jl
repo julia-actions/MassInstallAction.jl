@@ -1,5 +1,10 @@
 module MassInstallAction
 
-greet() = print("Hello World!")
+include("types.jl")
+
+include("public.jl")
+
+include("default_workflows.jl")
+include("utils.jl")
 
 end # module
