@@ -3,10 +3,18 @@ import GitHub:
 
 function install(workflow::Workflow,
                  org::AbstractString;
-                 token,
+                 token::Union{AbstractString, Nothing},
                  cc::AbstractVector{<:AbstractString})
-    auth = GitHub.authenticate(token)
-    orgrepos, page_data = GitHub.repos(org; auth = auth)
+    if token === nothing
+        auth = nothing
+    else
+        auth = GitHub.authenticate(token)
+    end
+    if auth === nothing
+        orgrepos, page_data = GitHub.repos(org)
+    else
+        orgrepos, page_data = GitHub.repos(org; auth = auth)
+    end
     pkgs = Vector{String}(undef, 0)
     for r in orgrepos
         name = r.name
@@ -23,7 +31,11 @@ function install(workflow::Workflow,
                  pkgs::AbstractVector{<:AbstractString};
                  token,
                  cc::AbstractVector{<:AbstractString})
-    auth = GitHub.authenticate(token)
+    if token === nothing
+        auth = nothing
+    else
+        auth = GitHub.authenticate(token)
+    end
     cc_string = string("cc: ", join(string.("@",
                                             strip.(strip.(strip.(cc),
                                                           '@'))), " "))
@@ -31,8 +43,13 @@ function install(workflow::Workflow,
     my_pr_title = "MassInstallAction: Install the $(workflow.name) workflow on the $(pkg).jl repository"
     my_pr_body = "This pull request sets up the $(workflow.name) workflow on the $(pkg).jl repository. $(cc_string)"
     for pkg in pkgs
-        pkgrepo = GitHub.repo("$(org)/$(pkg).jl"; auth = auth)
-        pkg_url_with_auth = "https://x-access-token:$(token)@github.com/$(org)/$(pkg).jl"
+        if auth === nothing
+            pkgrepo = GitHub.repo("$(org)/$(pkg).jl")
+        else
+            pkgrepo = GitHub.repo("$(org)/$(pkg).jl";
+                                  auth = auth)
+        end
+        pkg_url_with_auth = _get_repo_url_with_auth(org, pkg; token = token)
         with_temp_dir() do tmp_dir
             git() do git
                 cd(tmp_dir)
@@ -70,11 +87,19 @@ function install(workflow::Workflow,
                 params["head"] = my_pr_branch_name
                 params["base"] = pkgrepo.default_branch
                 params["body"] = my_pr_body
-                try
-                    GitHub.create_pull_request(pkgrepo;
-                                               params = params,
-                                               auth = auth)
-                catch
+                if auth === nothing
+                    try
+                        GitHub.create_pull_request(pkgrepo;
+                                                   params = params)
+                    catch
+                    end
+                else
+                    try
+                        itHub.create_pull_request(pkgrepo;
+                                                  params = params,
+                                                  auth = auth)
+                    catch
+                    end
                 end
             end
         end
