@@ -44,8 +44,8 @@ function install(workflow::Workflow,
                                             strip.(strip.(strip.(cc),
                                                           '@'))), " "))
     my_pr_branch_name = "massinstallaction/set-up-$(workflow.name)"
-    my_pr_title = "MassInstallAction: Install the $(workflow.name) workflow on the $(pkg).jl repository"
-    my_pr_body = "This pull request sets up the $(workflow.name) workflow on the $(pkg).jl repository. $(cc_string)"
+    my_pr_title = "MassInstallAction: Install the $(workflow.name) workflow on this repository"
+    my_pr_body = "This pull request sets up the $(workflow.name) workflow on this repository. $(cc_string)"
     for pkg in pkgs
         if auth === nothing
             pkgrepo = GitHub.repo("$(org)/$(pkg).jl")
