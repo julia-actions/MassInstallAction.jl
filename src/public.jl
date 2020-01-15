@@ -22,7 +22,11 @@ function install(workflow::Workflow,
     end
     unique!(pkgs)
     sort!(pkgs)
-    install(org, pkgs; cc = cc, token = token)
+    install(workflow,
+            org,
+            pkgs;
+            cc = cc,
+            token = token)
     return nothing
 end
 
@@ -95,9 +99,9 @@ function install(workflow::Workflow,
                     end
                 else
                     try
-                        itHub.create_pull_request(pkgrepo;
-                                                  params = params,
-                                                  auth = auth)
+                        GitHub.create_pull_request(pkgrepo;
+                                                   params = params,
+                                                   auth = auth)
                     catch
                     end
                 end
