@@ -13,8 +13,7 @@ Replace
 `MY_GITHUB_ORGANIZATION` with the name of your GitHub
 organization.
 
-Replace `MY_USERNAME`, `ANOTHER_ORG_ADMIN`,
-and `YET_ANOTHER_ORG_ADMIN` with your username and the
+Replace `MY_USERNAME`, `ANOTHER_ORG_ADMIN`, etc. with your username and the
 usernames of other administrators in your GitHub
 organization.
 
@@ -26,5 +25,5 @@ julia> workflow = MassInstallAction.compat_helper()
 julia> MassInstallAction.install(workflow,
                                  "MY_GITHUB_ORGANIZATION";
                                  token = ENV["MY_GITHUB_TOKEN"],
-                                 cc = ["MY_USERNAME", "ANOTHER_ORG_ADMIN", "YET_ANOTHER_ORG_ADMIN"])
+                                 cc = ["MY_USERNAME", "ANOTHER_ORG_ADMIN"])
 ```
