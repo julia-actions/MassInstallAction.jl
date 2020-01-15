@@ -3,10 +3,6 @@ using Test
 
 @testset "MassInstallAction.jl" begin
     @testset "public.jl" begin
-        for workflow in [MassInstallAction.compat_helper(),
-                         MassInstallAction.version_vigilante()]
-            @test MassInstallAction.install(workflow, "bcbi"; token = nothing, cc = ["@bcbi"]) == nothing
-        end
     end
 
     @testset "repo_url.jl" begin
