@@ -48,3 +48,13 @@ julia> MassInstallAction.install(workflow,
                                  token = ENV["MY_GITHUB_TOKEN"],
                                  cc = ["MY_USERNAME", "ANOTHER_ORG_ADMIN"])
 ```
+
+## Example workflows
+
+```julia
+julia> workflow = MassInstallAction.compat_helper()
+
+julia> workflow = MassInstallAction.tag_bot()
+
+julia> workflow = MassInstallAction.version_vigilante()
+```
