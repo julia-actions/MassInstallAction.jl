@@ -1,7 +1,7 @@
 name = "MassInstallAction"
 uuid = "e162569b-3ff4-40cf-b055-1e5f8042da73"
 authors = ["Dilum Aluthge"]
-version = "0.1.0-DEV"
+version = "0.1.0"
 
 [deps]
 GitCommand = "49b5b516-ca3f-4003-a081-42bdcf55082d"
