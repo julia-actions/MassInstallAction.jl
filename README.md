@@ -58,3 +58,14 @@ julia> MassInstallAction.install(workflow,
 ```
 
 
+### Generating GitHub personal access token
+
+To generate the GitHub personal access token, follow the instructions from [this official link](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token).
+
+You should give these access in your GitHub token:
+
+- repo access:
+![image](https://user-images.githubusercontent.com/16418197/97649382-329a0980-1a25-11eb-8bc1-70f36c882586.png)
+
+- workflow access:
+![image](https://user-images.githubusercontent.com/16418197/97649452-5eb58a80-1a25-11eb-8c19-93628a349d9b.png)
