@@ -1,6 +1,6 @@
 # MassInstallAction
 
-[![Build Status](https://travis-ci.com/bcbi/MassInstallAction.jl.svg?branch=master)](https://travis-ci.com/bcbi/MassInstallAction.jl/branches)
+[![Build Status](https://github.com/bcbi/MassInstallAction.jl/workflows/CI/badge.svg)](https://github.com/bcbi/MassInstallAction.jl/actions?query=workflow%3ACI)
 [![Codecov](https://codecov.io/gh/bcbi/MassInstallAction.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/bcbi/MassInstallAction.jl)
 
 ```julia
