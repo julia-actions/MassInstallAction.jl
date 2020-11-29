@@ -83,7 +83,7 @@ function install(workflow::Workflow,
                 catch
                 end
                 try
-                    run(`$(git) push origin $(my_pr_branch_name)`)
+                    run(`$(git) push --force origin $(my_pr_branch_name)`)
                 catch
                 end
                 try
