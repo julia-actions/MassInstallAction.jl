@@ -1,7 +1,7 @@
 # MassInstallAction
 
-[![Build Status](https://github.com/bcbi/MassInstallAction.jl/workflows/CI/badge.svg)](https://github.com/bcbi/MassInstallAction.jl/actions?query=workflow%3ACI)
-[![Codecov](https://codecov.io/gh/bcbi/MassInstallAction.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/bcbi/MassInstallAction.jl)
+[![Build Status](https://github.com/julia-actions/MassInstallAction.jl/workflows/CI/badge.svg)](https://github.com/julia-actions/MassInstallAction.jl/actions?query=workflow%3ACI)
+[![Codecov](https://codecov.io/gh/julia-actions/MassInstallAction.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/julia-actions/MassInstallAction.jl)
 
 ```julia
 julia> workflow = MassInstallAction.compat_helper()
