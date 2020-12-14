@@ -2,6 +2,18 @@ using MassInstallAction
 using Test
 
 @testset "MassInstallAction.jl" begin
+    @testset "types.jl" begin
+        @test MassInstallAction.Workflow("a", Dict("file"=>"stuff"), Set(["bad"])) isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", Dict("file"=>"stuff"), "bad") isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", Dict("file"=>"stuff")) isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", "file"=>"stuff", Set(["bad"])) isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", "file"=>"stuff", "bad") isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", "file"=>"stuff") isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", ["file1"=>"stuff1", "file2"=>"stuff2"], Set(["bad"])) isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", ["file1"=>"stuff1", "file2"=>"stuff2"], "bad") isa MassInstallAction.Workflow
+        @test MassInstallAction.Workflow("a", ["file1"=>"stuff1", "file2"=>"stuff2"]) isa MassInstallAction.Workflow
+    end
+
     @testset "public.jl" begin
     end
 

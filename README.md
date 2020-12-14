@@ -3,21 +3,47 @@
 [![Build Status](https://github.com/julia-actions/MassInstallAction.jl/workflows/CI/badge.svg)](https://github.com/julia-actions/MassInstallAction.jl/actions?query=workflow%3ACI)
 [![Codecov](https://codecov.io/gh/julia-actions/MassInstallAction.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/julia-actions/MassInstallAction.jl)
 
+Install a [GitHub Action](https://docs.github.com/en/free-pro-team@latest/actions) [workflow file](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) in one or more repositories.
+Using MassInstallAction does not require merge privileges,
+because the changes are submitted as pull request(s) to each package.
+
+There are two key steps: (1) creating the `workflow` and (2) installing it, a.k.a,
+submitting it as pull request(s) to one or more packages.
+
+## Creating the workflow
+
+Some workflows have convenient helpers:
+
 ```julia
-julia> workflow = MassInstallAction.compat_helper()
+julia> workflow = MassInstallAction.compat_helper()      # workflow for https://github.com/JuliaRegistries/CompatHelper.jl
 
-julia> workflow = MassInstallAction.tag_bot()
+julia> workflow = MassInstallAction.tag_bot()            # workflow for https://github.com/JuliaRegistries/TagBot
 
-julia> workflow = MassInstallAction.version_vigilante()
+julia> workflow = MassInstallAction.version_vigilante()  # workflow for https://github.com/bcbi/VersionVigilante.jl
 ```
 
-## Examples
+or you can create your own:
+
+```julia
+workflow = MassInstallAction.Workflow("MyWorkflow", "workflow_filename.yml" => read("/home/me/template_workflow_file.yml", String))
+```
+
+where you replace:
+
+- `"/home/me/template_workflow_file.yml"` with the path to the local file you've prepared with the desired contents of the workflow;
+- `"workflow_filename.yml"` with the name you want the file to have in the repositories' `.github/workflows` directory;
+- `"MyWorkflow"` with the name used to identify this workflow when Actions runs.
+
+You can add multiple workflow files simultaneously or even delete files, see `?MassInstallAction.Workflow`.
+
+
+## Installing the workflow: examples
 
 ### Install a workflow on all repositories in your GitHub organization
 
 First make sure that you have an environment variable
 named `MY_GITHUB_TOKEN` that contains a GitHub personal
-access token, and then run the following code.
+access token (see below), and then run the following code.
 
 Replace
 `MY_ORGANIZATION` with the name of your GitHub
