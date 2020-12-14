@@ -5,6 +5,15 @@ function git(f)
   return f("git")
 end
 
+"""
+    MassInstallAction.install(workflow, user_or_org::AbstractString, [pkgs]; token, cc::AbstractVector{<:AbstractString})
+
+Submit a pull request to install `workflow` for all packages owned by `user_or_org`.
+`token` is your personal access token for authentication, or `nothing` if you do not have privileges and need to fork the package.
+`cc` is a list of GitHub usernames that should receive notification about this pull request (beyond the regular watchers).
+
+If `pkgs` is supplied, pull requests will only be made to the listed packages.
+"""
 function install(workflow::Workflow,
                  org::AbstractString;
                  token::Union{AbstractString, Nothing},
@@ -59,6 +68,15 @@ function install(workflow::Workflow,
     end
 end
 
+"""
+    MassInstallAction.install(workflow, repo::GitHub.Repo; auth, pr_branch_name=..., pr_title=..., pr_body=..., commit_message=...)
+
+Submit a pull request to install `workflow` for repository `repo`. This version of `install` is
+designed to work in concert with [GitHub.jl](https://github.com/JuliaWeb/GitHub.jl), so that you can run queries, filter results,
+and then submit changes. See the documentation of that package for more detail about `repo` and `auth`.
+
+The remaining keywords are all strings, and have generic defaults but allow customization.
+"""
 function install(workflow::Workflow,
                  repo::GitHub.Repo;
                  auth::Union{Nothing,GitHub.Authorization},
