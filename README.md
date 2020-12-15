@@ -83,6 +83,9 @@ julia> MassInstallAction.install(workflow,
                                  cc = ["MY_USERNAME"])
 ```
 
+### Interaction with GitHub.jl
+
+This package uses and interacts with [GitHub.jl](https://github.com/JuliaWeb/GitHub.jl). In addition to the options above, you can `MassInstallAction.install(workflow, repo::GitHub.Repo)` directly. This may be the easiest approach if you want to filter repositories based on specific criteria. See `?MassInstallAction.install` for more information.
 
 ### Generating GitHub personal access token
 
