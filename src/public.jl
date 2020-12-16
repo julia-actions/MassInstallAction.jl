@@ -128,7 +128,7 @@ function install(workflow::Workflow,
                 @info "Pull request submitted for $(repo.name)"
             catch error
                 @warn "Assembling the pull request failed, skipping $(repo.name)"
-                show(err)
+                show(error)
             end
         end
     end
