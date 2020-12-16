@@ -10,7 +10,7 @@ import HTTP
 auth = authenticate(#= your-github-personal-access-token =#)   # don't ever post this publicly!
 
 # Get all the repositories in the JuliaDebug organization
-rs = repos(#= organization/user goes here =#, true; auth)[1]   # change true -> false for users (true = "org")
+rs = repos(#= organization/user goes here =#, true; auth=auth)[1]   # change true -> false for users (true = "org")
 
 # Optional: filter on various properties, e.g.,
 # filter!(r -> !r.fork, rs)    # eliminate all repos that are forks of other repos
@@ -28,7 +28,7 @@ rs = rs[collect(sel)]
 # This key is used by TagBot as well as Documenter, so do this even if you don't have any `docs/` in your repository.
 for r in rs
     has_secret = false
-    for s in secrets(r; auth)[1]
+    for s in secrets(r; auth=auth)[1]
         if s.name == "DOCUMENTER_KEY"
             has_secret = true
             break
@@ -36,8 +36,8 @@ for r in rs
     end
     has_secret && continue
     pubkey, privkey = GitHub.genkeys()
-    create_deploykey(r; auth, params=Dict("key"=>pubkey, "title"=>"Documenter", "read_only"=>false))
-    create_secret(r, "DOCUMENTER_KEY"; auth, value=privkey)
+    create_deploykey(r; auth=auth, params=Dict("key"=>pubkey, "title"=>"Documenter", "read_only"=>false))
+    create_secret(r, "DOCUMENTER_KEY"; auth=auth, value=privkey)
 end
 
 ## TagBot
@@ -48,7 +48,7 @@ end
 # Related: https://discourse.julialang.org/t/ann-required-updates-to-tagbot-yml/49249
 workflow = MassInstallAction.tag_bot()
 for r in rs
-    MassInstallAction.install(workflow, r; auth, commit_message="Set up TagBot workflow")
+    MassInstallAction.install(workflow, r; auth=auth, commit_message="Set up TagBot workflow")
 end
 
 ## Documenter
@@ -76,10 +76,10 @@ jobs:
 workflow = MassInstallAction.Workflow("Documenter", "Documenter.yml" => script)
 for r in rs
     # Check whether the repo has docs, if not skip it
-    filesdirs = directory(r, "."; auth)[1]
+    filesdirs = directory(r, "."; auth=auth)[1]
     idx = findfirst(fd -> fd.typ == "dir" && fd.name == "docs", filesdirs)
     if idx !== nothing
-        MassInstallAction.install(workflow, r; auth, commit_message="Build docs on GitHub Actions")
+        MassInstallAction.install(workflow, r; auth=auth, commit_message="Build docs on GitHub Actions")
     end
 end
 
@@ -137,7 +137,7 @@ ci_post = """
 for r in rs
     try
         # Parse the .travis.yml file and extract the versions
-        url = file(r, ".travis.yml"; auth).download_url
+        url = file(r, ".travis.yml"; auth=auth).download_url
         tscript = String(HTTP.get(url).body)
         lines = split(chomp(tscript), '\n')
         idx = findfirst(isequal("julia:"), lines)
@@ -163,7 +163,7 @@ for r in rs
             script *= ci_post
             todelete = ["../../.travis.yml"]
             # Find out if there's an appveyor and set it up for deletion
-            filesdirs = directory(r, "."; auth)[1]
+            filesdirs = directory(r, "."; auth=auth)[1]
             idx = findfirst(fd -> fd.typ == "file" && fd.name ∈ ("appveyor.yml", ".appveyor.yml"), filesdirs)
             if idx !== nothing
                 push!(todelete, "../../" * filesdirs[idx].name)
@@ -173,7 +173,7 @@ for r in rs
             println("OK to submit pull request? (y/n)")
             resp = readline(; keep=false)
             if resp ∈ ("y", "Y", "yes", "Yes", "YES")
-                MassInstallAction.install(workflow, r; auth, commit_message="Switch to GitHub Actions for CI")
+                MassInstallAction.install(workflow, r; auth=auth, commit_message="Switch to GitHub Actions for CI")
             end
         end
     catch
