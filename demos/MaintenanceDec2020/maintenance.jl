@@ -56,22 +56,22 @@ end
 script = """
 name: Documenter
 on:
-    push:
+  push:
     branches: [master]
     tags: [v*]
-    pull_request:
+  pull_request:
 
 jobs:
-    Documenter:
+  Documenter:
     name: Documentation
     runs-on: ubuntu-latest
     steps:
-        - uses: actions/checkout@v2
-        - uses: julia-actions/julia-buildpkg@latest
-        - uses: julia-actions/julia-docdeploy@latest
+      - uses: actions/checkout@v2
+      - uses: julia-actions/julia-buildpkg@latest
+      - uses: julia-actions/julia-docdeploy@latest
         env:
-            GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
-            DOCUMENTER_KEY: \${{ secrets.DOCUMENTER_KEY }}
+          GITHUB_TOKEN: \${{ secrets.GITHUB_TOKEN }}
+          DOCUMENTER_KEY: \${{ secrets.DOCUMENTER_KEY }}
 """
 workflow = MassInstallAction.Workflow("Documenter", "Documenter.yml" => script)
 for r in rs
