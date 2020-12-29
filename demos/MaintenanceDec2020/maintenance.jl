@@ -135,6 +135,16 @@ ci_post = """
           file: lcov.info
 """
 for r in rs
+    # Check whether the repo has a workflow called "CI.yml", and if so skip it
+    try
+        filesdirs = directory(r, ".github/workflows"; auth=auth)[1]
+        idx = findfirst(fd -> lowercase(fd.name) ∈ ("ci.yml", "ci.yaml"), filesdirs)
+        if idx !== nothing
+            println("\n\n$(r.name) skipped due to presence of $(filesdirs[idx].name)")
+            continue
+        end
+    catch
+    end
     try
         # Parse the .travis.yml file and extract the versions
         url = file(r, ".travis.yml"; auth=auth).download_url
