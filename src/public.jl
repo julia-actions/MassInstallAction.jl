@@ -83,7 +83,8 @@ function install(workflow::Workflow,
                  pr_branch_name::AbstractString = "massinstallaction/set-up-$(workflow.name)",
                  pr_title::AbstractString = "MassInstallAction: Install the $(workflow.name) workflow on this repository",
                  pr_body::AbstractString = "This pull request sets up the $(workflow.name) workflow on this repository.",
-                 commit_message::AbstractString = "Automated commit made by MassInstallAction.jl")
+                 commit_message::AbstractString = "Automated commit made by MassInstallAction.jl",
+                 target_dir::AbstractString = joinpath(".github", "workflows"))
     pkg_url_with_auth = repo.html_url.uri
     with_temp_dir() do tmp_dir
         git() do git
@@ -91,7 +92,7 @@ function install(workflow::Workflow,
             run(`$(git) clone $(pkg_url_with_auth) REPO`)
             cd("REPO")
             run(`$(git) checkout -B $(pr_branch_name)`)
-            workflows_directory = joinpath(pwd(), ".github", "workflows")
+            workflows_directory = joinpath(pwd(), target_dir)
             mkpath(workflows_directory)
             cd(workflows_directory)
             for filename in workflow.files_to_delete
