@@ -5,7 +5,7 @@ Install or update GitHub Action workflows on repositories
 
 API (all require qualification with `MassInstallAction`):
 
-- Workflow creation: `Workflow`, `compat_helper`, `tag_bot`, `version_vigilante`
+- Workflow creation: `Workflow`, `compat_helper`, `tag_bot`
 - Workflow installation: `install`
 """
 module MassInstallAction
