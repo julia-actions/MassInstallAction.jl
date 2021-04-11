@@ -16,8 +16,6 @@ Some workflows have convenient helpers:
 julia> workflow = MassInstallAction.compat_helper()      # workflow for https://github.com/JuliaRegistries/CompatHelper.jl
 
 julia> workflow = MassInstallAction.tag_bot()            # workflow for https://github.com/JuliaRegistries/TagBot
-
-julia> workflow = MassInstallAction.version_vigilante()  # workflow for https://github.com/bcbi/VersionVigilante.jl
 ```
 
 or you can create your own:
