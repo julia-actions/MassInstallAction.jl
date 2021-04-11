@@ -4,8 +4,6 @@
 [![Codecov](https://codecov.io/gh/julia-actions/MassInstallAction.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/julia-actions/MassInstallAction.jl)
 
 Install a [GitHub Action](https://docs.github.com/en/free-pro-team@latest/actions) [workflow file](https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions) in one or more repositories.
-Using MassInstallAction does not require merge privileges,
-because the changes are submitted as pull request(s) to each package.
 
 There are two key steps: (1) creating the `workflow` and (2) installing it, a.k.a,
 submitting it as pull request(s) to one or more packages.
@@ -35,7 +33,6 @@ where you replace:
 - `"MyWorkflow"` with the name used to identify this workflow when Actions runs.
 
 You can add multiple workflow files simultaneously or even delete files, see `?MassInstallAction.Workflow`.
-
 
 ## Installing the workflow: examples
 
