@@ -65,6 +65,10 @@ function install(workflow::Workflow,
                                   auth = auth)
         end
         install(workflow, pkgrepo; auth=auth, pr_body=pr_body)
+
+        # Avoid GitHub secondary rate limits
+        # https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits
+        sleep(1)
     end
 end
 
