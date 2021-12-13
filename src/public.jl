@@ -14,10 +14,13 @@ Submit a pull request to install `workflow` for all packages owned by `user_or_o
 
 If `pkgs` is supplied, pull requests will only be made to the listed packages.
 """
-function install(workflow::Workflow,
-                 org::AbstractString;
-                 token::Union{AbstractString, Nothing},
-                 cc::AbstractVector{<:AbstractString})
+function install(
+    workflow::Workflow,
+    org::AbstractString;
+    token::Union{AbstractString,Nothing},
+    cc::AbstractVector{<:AbstractString},
+    ignore_forks::Bool=true,
+)
     if token === nothing
         auth = nothing
     else
@@ -28,6 +31,11 @@ function install(workflow::Workflow,
     else
         orgrepos, page_data = GitHub.repos(org; auth = auth)
     end
+
+    if ignore_forks
+        orgrepos = [repo for repo in orgrepos if repo.fork == false]
+    end
+
     pkgs = Vector{String}(undef, 0)
     for r in orgrepos
         name = r.name
