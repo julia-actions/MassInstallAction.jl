@@ -21,4 +21,9 @@ using Test
         @test MassInstallAction._get_repo_url_with_auth("MYORG", "MYPKG"; token = "MYTOKEN") == "https://x-access-token:MYTOKEN@github.com/MYORG/MYPKG.jl"
         @test MassInstallAction._get_repo_url_with_auth("MYORG", "MYPKG"; token = nothing) == "https://github.com/MYORG/MYPKG.jl"
     end
+
+    @testset "default workflows" begin
+        @test MassInstallAction.compat_helper() isa MassInstallAction.Workflow
+        @test MassInstallAction.tag_bot() isa MassInstallAction.Workflow
+    end
 end
