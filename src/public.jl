@@ -81,11 +81,15 @@ function install(workflow::Workflow,
 end
 
 """
-    MassInstallAction.install(workflow, repo::GitHub.Repo; auth, pr_branch_name=..., pr_title=..., pr_body=..., commit_message=...)
+    MassInstallAction.install(workflow, repo::GitHub.Repo;
+                              auth, pkg_url_type::Symbol = :html,
+                              pr_branch_name=..., pr_title=..., pr_body=..., commit_message=...)
 
 Submit a pull request to install `workflow` for repository `repo`. This version of `install` is
 designed to work in concert with [GitHub.jl](https://github.com/JuliaWeb/GitHub.jl), so that you can run queries, filter results,
 and then submit changes. See the documentation of that package for more detail about `repo` and `auth`.
+
+`pkg_url_type` can be `:html` or `:ssh`.
 
 The remaining keywords are all strings, and have generic defaults but allow customization.
 """
@@ -95,8 +99,15 @@ function install(workflow::Workflow,
                  pr_branch_name::AbstractString = "massinstallaction/set-up-$(workflow.name)",
                  pr_title::AbstractString = "MassInstallAction: Install the $(workflow.name) workflow on this repository",
                  pr_body::AbstractString = "This pull request sets up the $(workflow.name) workflow on this repository.",
-                 commit_message::AbstractString = "Automated commit made by MassInstallAction.jl")
-    pkg_url_with_auth = repo.html_url.uri
+                 commit_message::AbstractString = "Automated commit made by MassInstallAction.jl",
+                 pkg_url_type::Symbol = :html)
+    if pkg_url_type === :html
+        pkg_url_with_auth = repo.html_url.uri
+    elseif pkg_url_type === :ssh
+        pkg_url_with_auth = repo.ssh_url.uri
+    else
+        throw(ArguemntError("`pkg_url_type = $(pkg_url_type)` not supported"))
+    end
     with_temp_dir() do tmp_dir
         git() do git
             cd(tmp_dir)
