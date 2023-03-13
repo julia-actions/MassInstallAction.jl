@@ -106,7 +106,7 @@ function install(workflow::Workflow,
     elseif pkg_url_type === :ssh
         pkg_url_with_auth = repo.ssh_url.uri
     else
-        throw(ArguemntError("`pkg_url_type = $(pkg_url_type)` not supported"))
+        throw(ArgumentError("`pkg_url_type = $(pkg_url_type)` not supported"))
     end
     with_temp_dir() do tmp_dir
         git() do git
