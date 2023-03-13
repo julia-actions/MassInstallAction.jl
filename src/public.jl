@@ -6,11 +6,16 @@ function git(f)
 end
 
 """
-    MassInstallAction.install(workflow, user_or_org::AbstractString, [pkgs]; token, cc::AbstractVector{<:AbstractString})
+    MassInstallAction.install(workflow, user_or_org::AbstractString, [pkgs];
+                              token, cc::AbstractVector{<:AbstractString},
+                              ignore_forks::Bool=true,
+                              kwargs...)
 
 Submit a pull request to install `workflow` for all packages owned by `user_or_org`.
 `token` is your personal access token for authentication, or `nothing` if you do not have privileges and need to fork the package.
 `cc` is a list of GitHub usernames that should receive notification about this pull request (beyond the regular watchers).
+Additional keyword arguments `kwargs...` are forwarded directly to
+`MassInstallAction.install(workflow, repo::GitHub.Repo; kwargs...)`.
 
 If `pkgs` is supplied, pull requests will only be made to the listed packages.
 """
@@ -20,6 +25,7 @@ function install(
     token::Union{AbstractString,Nothing},
     cc::AbstractVector{<:AbstractString},
     ignore_forks::Bool=true,
+    kwargs...
 )
     if token === nothing
         auth = nothing
@@ -47,7 +53,8 @@ function install(
             org,
             pkgs;
             cc = cc,
-            token = token)
+            token = token,
+            kwargs...)
     return nothing
 end
 
@@ -55,7 +62,8 @@ function install(workflow::Workflow,
                  org::AbstractString,
                  pkgs::AbstractVector{<:AbstractString};
                  token,
-                 cc::AbstractVector{<:AbstractString})
+                 cc::AbstractVector{<:AbstractString},
+                 kwargs...)
     if token === nothing
         auth = nothing
     else
@@ -72,7 +80,7 @@ function install(workflow::Workflow,
             pkgrepo = GitHub.repo("$(org)/$(pkg).jl";
                                   auth = auth)
         end
-        install(workflow, pkgrepo; auth=auth, pr_body=pr_body)
+        install(workflow, pkgrepo; auth=auth, pr_body=pr_body, kwargs...)
 
         # Avoid GitHub secondary rate limits
         # https://docs.github.com/en/rest/overview/resources-in-the-rest-api#secondary-rate-limits
